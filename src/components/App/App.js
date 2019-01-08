@@ -3,6 +3,7 @@ import './App.css';
 import PlayList from '../PlayList/PlayList.js';
 import SearchResults from '../SearchResults/SearchResults.js';
 import SearchBar from '../SearchBar/SearchBar.js';
+import Spotify from '../../util/Spotify';
 //Module to render all other components to index.js
 class App extends React.Component {
   constructor(props) {
@@ -56,10 +57,13 @@ class App extends React.Component {
 // Method to generate uri array, and save playlist to spotify account
   savePlaylist() {
     const trackURIs = [];
+    Spotify.savePlaylist();
+    this.setState({playListName: 'New Playlist',
+    playListTracks: []});
   }
 // Search method to hook to Spotify API and return values
   search(term) {
-    console.log(term);
+    Spotify.search(term);
   }
 
   render() {
