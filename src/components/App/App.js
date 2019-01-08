@@ -30,6 +30,9 @@ class App extends React.Component {
     //Binding for methods using this
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
+    this.updatePlaylistName = this.updatePlaylistName.bind(this);
+    this.savePlaylist = this.savePlaylist.bind(this);
+    this.search = this.search.bind(this);
   }
   //Method to allow user to add track to playListTrack
   addTrack(track) {
@@ -43,21 +46,35 @@ class App extends React.Component {
   }
   //Method to remove track from playListTrack
   removeTrack(track) {
-      let currentPlayList = this.state.playListTracks.filter(savedTrack => savedTrack.id != track.id);
+      let currentPlayList = this.state.playListTracks.filter(savedTrack => savedTrack.id !== track.id);
       this.setState({playListTracks: currentPlayList});
     }
+// Method to update playlist className
+  updatePlaylistName(name) {
+    this.setState({playListName: name});
+  }
+// Method to generate uri array, and save playlist to spotify account
+  savePlaylist() {
+    const trackURIs = [];
+  }
+// Search method to hook to Spotify API and return values
+  search(term) {
+    console.log(term);
+  }
 
   render() {
     return (
       <div>
         <h1>Ja<span className="highlight">mmm</span>ing</h1>
         <div className="App">
-          <SearchBar />
+          <SearchBar onSearch={this.search}/>
           <div className="App-playlist">
             <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack}/>
             <PlayList playListName={this.state.playListName}
             playListTracks={this.state.playListTracks}
-            onRemove={this.removeTrack}/>
+            onRemove={this.removeTrack}
+            onNameChange={this.state.playListName}
+            onSave={this.savePlaylist}/>
           </div>
         </div>
       </div>
