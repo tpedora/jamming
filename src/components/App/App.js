@@ -5,6 +5,9 @@ import SearchResults from '../SearchResults/SearchResults.js';
 import SearchBar from '../SearchBar/SearchBar.js';
 import Spotify from '../../util/Spotify';
 //Module to render all other components to index.js
+
+Spotify.getAccessToken();
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -56,14 +59,15 @@ class App extends React.Component {
   }
 // Method to generate uri array, and save playlist to spotify account
   savePlaylist() {
-    const trackURIs = [];
-    Spotify.savePlaylist();
+    const trackUris = this.state.playListTracks.uri.map();
+    Spotify.savePlaylist(this.state.playListTracks.name, trackUris);
     this.setState({playListName: 'New Playlist',
     playListTracks: []});
   }
 // Search method to hook to Spotify API and return values
   search(term) {
-    Spotify.search(term);
+    Spotify.search(term).then(searchResults => this.setState({
+      searchResults: searchResults}));
   }
 
   render() {
