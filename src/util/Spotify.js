@@ -1,5 +1,4 @@
-let accessToken = undefined;
-let expiresIn = undefined;
+let accessToken;
 const clientID = '5c035add292c42d590ccd514a598dbc3';
 const redirectURI = 'http://localhost:3000/';
 
@@ -9,8 +8,8 @@ const Spotify = {
     if (accessToken) {
       return accessToken;
     } else if (window.location.href.match(/access_token=([^&]*)/) && window.location.href.match(/expires_in=([^&]*)/)) {
-      let accessToken = window.location.href.match(/access_token=([^&]*)/)[1];
-      let expiresIn = window.location.href.match(/expires_in=([^&]*)/)[1];
+      accessToken = window.location.href.match(/access_token=([^&]*)/)[1];
+      const expiresIn = window.location.href.match(/expires_in=([^&]*)/)[1];
 
       window.setTimeout(() => accessToken = '', expiresIn*1000);
       window.history.pushState('Access Token', null, '/');
@@ -23,13 +22,15 @@ const Spotify = {
   },
 // Search method to hook to Spotify savePlaylist
   search(term) {
-    fetch(`https://api.spotify.com/v1/search?type=track&q=${term}`, {
+    this.getAccessToken();
+
+    return fetch(`https://api.spotify.com/v1/search?type=track&q=${term}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`
       }
     }).then(response => response.json()).then(jsonResponse => {
       if (jsonResponse.ok) {
-        return jsonResponse.map(track => {
+        return jsonResponse.tracks.items.map(track => {
           return ({
             id: track.id,
             name: track.name,
@@ -62,6 +63,7 @@ const Spotify = {
       ).then(jsonResponse => {
           if(jsonResponse.ok) {
             let userId = jsonResponse.id;
+            return userId;
           }
           throw new Error('Request failed');
         }, networkError => console.log(networkError.message));

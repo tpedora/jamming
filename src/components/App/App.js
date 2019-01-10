@@ -6,30 +6,13 @@ import SearchBar from '../SearchBar/SearchBar.js';
 import Spotify from '../../util/Spotify';
 //Module to render all other components to index.js
 
-Spotify.getAccessToken();
-
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchResults: [{
-        name: 'Heart of The Matter',
-        artist: 'Don Henley',
-        album: 'The Best Of',
-        id: 1
-      }, {
-        name: 'Superstition',
-        artist: 'Stevie Wonder',
-        album: 'Songs in the key of life',
-        id: 2
-      }],
+      searchResults: [],
       playListName: 'Coding Playlist',
-      playListTracks: [{
-        name: 'Heart of The Matter',
-        artist: 'Don Henley',
-        album: 'The Best Of',
-        id: 1
-      }]
+      playListTracks: []
     };
     //Binding for methods using this
     this.addTrack = this.addTrack.bind(this);
@@ -66,10 +49,11 @@ class App extends React.Component {
   }
 // Search method to hook to Spotify API and return values
   search(term) {
-    Spotify.search(term).then(searchResults => this.setState({
-      searchResults: searchResults}));
+    Spotify.search(term).then(searchResults => {
+      this.setState({searchResults: searchResults});
+    });
   }
-
+  
   render() {
     return (
       <div>
