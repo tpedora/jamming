@@ -22,7 +22,7 @@ const Spotify = {
   },
 // Search method to hook to Spotify savePlaylist
   search(term) {
-    this.getAccessToken();
+    let accessToken = this.getAccessToken();
 
     return fetch(`https://api.spotify.com/v1/search?type=track&q=${term}`, {
       headers: {
@@ -40,11 +40,11 @@ const Spotify = {
           });
         })
       }
-      throw new Error('Request failed');
     }, networkError => console.log(networkError.message));
   },
 // Method to save a users playListTrack
   savePlaylist(name, trackUris) {
+    let accessToken = this.getAccessToken();
     if (!name && trackUris.length === 0) {
       return;
     }
@@ -55,7 +55,7 @@ const Spotify = {
     let userName = '';
     const endpointId = `${currentUser}`;
 // Below is an api call to generate userId
-    fetch(endpointId, {
+    return fetch(endpointId, {
       headers: {
         Authorization: `Bearer ${accessToken}`
       }
@@ -63,39 +63,39 @@ const Spotify = {
       ).then(jsonResponse => {
           if(jsonResponse.ok) {
             let userId = jsonResponse.id;
-            return userId;
-          }
-          throw new Error('Request failed');
-        }, networkError => console.log(networkError.message));
+
 // Post request to create the new playlist for the users
-    fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/jsonReponse'
-      },
-      body: JSON.stringify({
-        name: name
-      })
-    }
-    ).then(response => response.json()).then(jsonResponse => {
-      let playlistId = jsonResponse.id;
-      return playlistId;
-    }, networkError => console.log(networkError.message));
+            return fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
+              method: 'POST',
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+                'Content-Type': 'application/jsonReponse'
+              },
+              body: JSON.stringify({
+                name: name
+              })
+            }
+            ).then(response => response.json()).then(jsonResponse => {
+              let playlistId = jsonResponse.id;
+              return playlistId;
 // POST to create new playlist in the user accounts
-    fetch(`https://api.spotify.com/v1/users/${userId}/${playlistId}/tracks`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/jsonReponse'
-      },
-      body: JSON.stringify({
-        uris: trackUris
-      })
-    }).then(response => response.json()).then(jsonResponse => {
-      let playlistId = jsonResponse.id;
-      return playlistId;
-    }, networkError => console.log(networkError.message));
-  },
-}
+            fetch(`https://api.spotify.com/v1/users/${userId}/${playlistId}/tracks`, {
+              method: 'POST',
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+                'Content-Type': 'application/jsonReponse'
+              },
+              body: JSON.stringify({
+                uris: trackUris
+              })
+            }).then(response => response.json()).then(jsonResponse => {
+              let playlistId = jsonResponse.id;
+              return playlistId;
+            });
+          });
+        }
+      }, networkError => console.log(networkError.message));
+    }
+  }
+
 export default Spotify;
