@@ -42,8 +42,11 @@ class App extends React.Component {
   }
 // Method to generate uri array, and save playlist to spotify account
   savePlaylist() {
-    const trackUris = this.state.playListTracks.uri.map();
-    Spotify.savePlaylist(this.state.playListTracks.name, trackUris);
+    const trackUris = [];
+    for (let i = 0; i < this.state.playListTracks.length; i++) {
+      trackUris.push(this.state.playListTracks[i].uri);
+    }
+    Spotify.savePlaylist(this.state.playListName, trackUris);
     this.setState({playListName: 'New Playlist',
     playListTracks: []});
   }
@@ -53,7 +56,7 @@ class App extends React.Component {
       this.setState({searchResults: searchResults});
     });
   }
-  
+
   render() {
     return (
       <div>
@@ -65,7 +68,7 @@ class App extends React.Component {
             <PlayList playListName={this.state.playListName}
             playListTracks={this.state.playListTracks}
             onRemove={this.removeTrack}
-            onNameChange={this.state.playListName}
+            onNameChange={this.updatePlaylistName}
             onSave={this.savePlaylist}/>
           </div>
         </div>

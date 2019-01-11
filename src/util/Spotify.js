@@ -29,7 +29,7 @@ const Spotify = {
         Authorization: `Bearer ${accessToken}`
       }
     }).then(response => response.json()).then(jsonResponse => {
-      if (jsonResponse.ok) {
+      if (jsonResponse) {
         return jsonResponse.tracks.items.map(track => {
           return ({
             id: track.id,
@@ -48,11 +48,10 @@ const Spotify = {
     if (!name && trackUris.length === 0) {
       return;
     }
-
+// Variables for coming paths
     let userId;
     let playlistId;
-    const currentUser = 'https://api.spotify.com/v1/me';
-    let userName = '';
+    const currentUser = 'https://api.spotify.com/v1/me';    
     const endpointId = `${currentUser}`;
 // Below is an api call to generate userId
     return fetch(endpointId, {
@@ -62,7 +61,7 @@ const Spotify = {
     }).then(response => response.json()
       ).then(jsonResponse => {
           if(jsonResponse.ok) {
-            let userId = jsonResponse.id;
+            userId = jsonResponse.id;
 // Post request to create the new playlist for the users
             return fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
               method: 'POST',
@@ -75,7 +74,7 @@ const Spotify = {
               })
             }
             ).then(response => response.json()).then(jsonResponse => {
-              let playlistId = jsonResponse.id;
+              playlistId = jsonResponse.id;
 // POST to create new playlist in the user accounts
               return fetch(`https://api.spotify.com/v1/users/${userId}/${playlistId}/tracks`, {
                 method: 'POST',
