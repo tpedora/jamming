@@ -1,0 +1,14 @@
+Design Document Template
+January 10, 2019
+
+OBJECTIVE
+To provide a means to trigger the search by either a click, or by the user hitting enter. 
+
+BACKGROUND 
+We don’t know how the end user will trigger their searches. For a more cohesive enduser experience, the functionality of allowing them to trigger their search in either of the two most common forms (clicking search, or hitting enter) must be accessible to the user. Not every user will default to trying an additional method to interacting with a page. The user may perceive an error, and instead of defaulting to a secondary method, may leave the page. 
+
+TECHNICAL DESIGN
+Based on the current design, the .search() in App.js is being passed down via the SearchBar.js instance. The first addition needed is the creation of a method in SearchBar module. Create handleKeyPress(), which should take an event parameter. There should also be a conditional statement that checks if event.key  is equal to ‘Enter’. If the condition is true, the state of SearchBar’s term state should be passed via props to the search method on App.js. 
+
+CAVEATS
+To the best of my knowledge, this is the best way. You could create a a conditional state within the existing search method inside of SearchBar.js, however my initial concern would be event propagation. Keeping the event handlers separate and clean would create separation of duties that could make scaling the application easier. Also event.keyCode is a more conventional way to listen for an enter being pressed, however after my research, React doesn’t consistently convert a key to a code value, there is more consistency when you look for ‘Enter’.
