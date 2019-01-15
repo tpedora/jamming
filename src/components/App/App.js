@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import PlayList from '../PlayList/PlayList.js';
+import PlayList from './PlayList/PlayList.js';
 import SearchResults from '../SearchResults/SearchResults.js';
 import SearchBar from '../SearchBar/SearchBar.js';
 import Spotify from '../../util/Spotify';
