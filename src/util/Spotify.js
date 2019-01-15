@@ -1,6 +1,6 @@
 let accessToken;
 const clientID = '5c035add292c42d590ccd514a598dbc3';
-const redirectURI = 'http://localhost:3000/';
+const redirectURI = 'https://tpjamming.herokuapp.com';
 
 const Spotify = {
 // Method to get user token if provided, if not, use an auth uri to generate access token
@@ -51,7 +51,7 @@ const Spotify = {
 // Variables for coming paths
     let userId;
     let playlistId;
-    const currentUser = 'https://api.spotify.com/v1/me';    
+    const currentUser = 'https://api.spotify.com/v1/me';
     const endpointId = `${currentUser}`;
 // Below is an api call to generate userId
     return fetch(endpointId, {
