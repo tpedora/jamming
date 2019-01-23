@@ -1,6 +1,6 @@
 let accessToken;
 const clientID = '5c035add292c42d590ccd514a598dbc3';
-const redirectURI = 'https://tpjamming.herokuapp.com';
+const redirectURI = 'https://tender-goodall-8b76b1.netlify.com';
 
 const Spotify = {
 // Method to get user token if provided, if not, use an auth uri to generate access token
